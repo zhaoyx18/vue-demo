@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        {{a}}
+        <button @click="add">点我增加</button>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            a: 1
+        },
+        methods: {
+            add:function(){
+                this.a +=1;
+            }
+        },
+        /*生命钩子:在实例不同的生命周期的不同阶段被调用
+            注意不要使用箭头函数，会改变this的指向
+            具体的生命周期，可见生命周期图
+        */
+        created:function(){// 创建成功后
+            // this 指向vue实例
+
+        },
+        mounted:function(){},// 
+        updated:function(){},// 更新以后
+        destroyrd:function(){},// 销毁以后
+    })
+    /**
+        vue中暴露实例属性以及方法，以$开头
+    */
+    console.log(vm.$data);// 当前对象中的数据
+    console.log(vm.$el); // 当前的元素
+    /*监听变量a的变化*/
+    vm.$watch('a', function (newvalue, oldvlaue) {
+        console.log('newvalue_'+newvalue);
+        console.log('oldvlaue_'+oldvlaue);
+    })
+</script>
+
+</html>
