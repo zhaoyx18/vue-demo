@@ -1,87 +1,66 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 
 <body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
     <div id="app">
-        {{message}}
-    </div>
-    <div id="app-2">
-        <span v-bind:title="message">
-            鼠标悬停几秒钟查看此处动态绑定的提示信息！
-        </span>
-    </div>
-    <div id="app-3">
-        <p v-if="seen">显示/隐藏</p>
-    </div>
-    <div id="app-4">
-        <ul v-for="todo in todos">
-            <li>{{todo.text}}</li>
+        <div v-bind:title="message">
+            鼠标移入
+        </div>
+        <p v-if="show">你可以看见我</p>
+        <ul>
+            <li v-for="item in list">
+                {{item.name}}
+            </li>
         </ul>
+        <p>{{inputMessage}}</p>
+        <button v-on:click="change">点击获取时间</button>
+        <input type="text" v-model="input">
+        <span>{{input}}</span>
+        <ol>
+            <todo-item v-for="item in list" v-bind:todo="item"></todo-item>
+        </ol>
     </div>
-    <div id="app-5">
-        <p>{{message}}</p>
-        <button v-on:click="remessage">点我！</button>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script>
-        var app = new Vue({
-            el: "#app",
-            data: {
-                message: 'Hello Vue!'
-            }
-        })
-        var app2 = new Vue({
-            el: "#app-2",
-            data: {
-                message: '页面加载于' + new Date().toLocaleDateString()
-            }
-        })
-        var app3 = new Vue({
-            el: "#app-3",
-            data: {
-                seen: false
-            }
-        })
-        var app4 = new Vue({
-            el: "#app-4",
-            data: {
-                todos: [
-                    { text: '学习 javaScript' },
-                    { text: '学习 Vue' },
-                    { text: '学习 多个项目' }
-                ]
-            }
-        })
-        var app5 = new Vue({
-            el: "#app-5",
-            data: {
-                message: 'zyx'
-            },
-            methods: {
-                remessage: function () {
-                    this.message = this.message.split('').reverse().join('')
-                }
-            }
-
-        })
-    </script>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // 放在最前面
+    /**
+    父——子间数据传递 通过props 创建接口
+    1、子组件增加props:['属性名'] 用于接收变量
+    2、在子组件通过v-bind:属性名="变量名" 绑定变量
+    3、在子组件内部即可获得数据
+    */
+    Vue.component('todo-item', {
+        props:['todo'],
+        template: '<li>{{todo.name}}</li>'
+    })
+    var app = new Vue({
+        el: "#app",
+        data: {
+            message: '现在是北京时间' + new Date().toLocaleString(),
+            show: false,
+            list: [
+                { 'name': ' dior ' },
+                { 'name': ' cannel' },
+                { 'name': ' ysl ' }
+            ],
+            inputMessage: '',
+            input: ''
+        },
+        methods: {
+            change: function () {
+                this.inputMessage = new Date().toLocaleString()
+            }
+        }
+    })
+  
+</script>
 
 </html>
