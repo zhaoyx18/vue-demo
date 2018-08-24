@@ -12,6 +12,16 @@
     <div id="app">
         {{a}}
         <button @click="add">点我增加</button>
+        <!-- 给元素绑定属性，都需要用v-bind -->
+        <div>
+            <button v-bind:disabled="!submit">提交</button>
+        </div>
+        <!-- 计算属性 -->
+        <!-- 当展示的数据需要大量计算处理时，可用计算属性实现 -->
+        <div>
+            <span>{{message}}</span>
+            <span>{{transMessage}}</span>
+        </div>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -19,7 +29,14 @@
     var vm = new Vue({
         el: "#app",
         data: {
-            a: 1
+            a: 1,
+            submit:false,
+            message:'a,b,c,d'
+        },
+        computed:{// 计算属性 通过return返回值
+            transMessage:function(){
+                return this.message.split(',').join('')
+            }
         },
         methods: {
             add:function(){
