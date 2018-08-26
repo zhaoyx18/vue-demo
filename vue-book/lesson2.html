@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    .active{
+        color: red;
+    }
+    .text-center{
+        text-align: center;
+    }
+</style>
+<body>
+   <div id="app">
+        <!--n class属性中有‘-’时，要在class上加上“ ”号 -->
+        <div v-bind:class="{active: isActive,'text-center': isCenter}">这是什么颜色</div> 
+        <!-- class数据绑定不必内联在模板里  不需要加上{}-->
+        <div v-bind:class="classobj">这是什么颜色</div> 
+        <!-- 使用计算属性控制class绑定 -->
+        <div v-bind:class="computedClass">这是什么颜色</div> 
+        <!-- 通过数组传递class -->
+        <div v-bind:class="[activeClass,centerClass]">通过数组传递class</div>
+
+        <div v-bind:style="{color:activeColor,'font-size':fontSize + 'px'}">内联样式</div>
+        <div v-bind:style="styleObj">内联样式对象</div>
+    </div> 
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        /*
+            class 中带有- 注意加上“”
+            绑定class的方式：
+            1、内联模板绑定：v-bind：class="{}"
+            2、变量绑定：简单的逻辑判断，不要加{}，是内联 的简化版
+            3、计算属性绑定：复杂的逻辑判断，注意return 一个对象
+            4、通过数组传递，将class名赋值给变量上，通过数组传递，同时可配合运算符
+
+            绑定内联样式
+        */
+        var app = new Vue({
+            el:'#app',
+            data:{
+                isActive:true,
+                isCenter:false,
+                errorr:false,
+                classobj:{
+                    active: true,
+                    'text-center': true
+                },
+                activeClass:'active',
+                centerClass:'text-center',
+                activeColor:'blue',
+                fontSize:20,
+                styleObj:{
+                   color:'blue',
+                   'font-size': '20px'
+                }
+            },
+            computed:{
+                computedClass:function(){
+                    return {
+                        active:this.isActive && !this.error,
+                        'text-center': this.error
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
