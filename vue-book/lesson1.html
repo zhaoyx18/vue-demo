@@ -22,25 +22,78 @@
             <span>{{message}}</span>
             <span>{{transMessage}}</span>
         </div>
+        <div>
+            first Name:{{firstName}}
+            last Name:{{lastName}}
+            full Name:{{fullName}}
+        </div>
+        <div>
+            设置名称：<input type="text" v-model="name">
+            <button @click="setName()">确定</button>
+        </div>
+    </div>
+    <div id="watchApp">
+        <!-- 监听器：watch 一般用于异步操作或花销比较大时 -->
+        <p>Ask a question:</p>
+        <input type="text" v-model="question">
+        <p>{{answer}}</p>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
+<!-- 提供这些功能以保持精简。这也可以让你自由选择自己更熟悉的工具。 -->
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 <script>
+    /**
+        总结：关于数据的监听
+        1、当b变量改变带动a变量改变时，使用计算属性；
+        2、当a发生变化同时带动b反生变化时（双向变化），使用set方法进行双向的数据绑定
+        3、当需要根据某数据变化发生异变改变时，使用watch进行监听
+    */
     var vm = new Vue({
         el: "#app",
         data: {
             a: 1,
             submit:false,
-            message:'a,b,c,d'
+            message:'a,b,c,d',
+            firstName:'Jonn',
+            lastName:'Doe',
+            name:''
         },
-        computed:{// 计算属性 通过return返回值
+        /**
+        1、计算属性 通过return返回值 当message发生变化时，transMessage会直接发生变化不需要重新调用方法
+        2、当b变量改变带动a变量改变时，使用计算属性；相比watch更加简单
+        3、当a发生变化同时带动b反生变化时（双向变化），使用set方法
+        */ 
+        computed:{
             transMessage:function(){
                 return this.message.split(',').join('')
+            },
+            fullName:{
+                get:function (){
+                    return this.firstName + ' ' + this.lastName;
+                },
+                set:function(name){
+                    if(name){
+                        var name = name.split(' ');
+                        if(name.length){
+                            this.firstName = name[0];
+                            this.lastName = name[1];
+                        }
+                    
+                    }
+                    
+                }
+                
             }
         },
         methods: {
             add:function(){
                 this.a +=1;
+            },
+            setName:function(){
+                this.fullName = this.name;
             }
         },
         /*生命钩子:在实例不同的生命周期的不同阶段被调用
@@ -64,6 +117,38 @@
     vm.$watch('a', function (newvalue, oldvlaue) {
         console.log('newvalue_'+newvalue);
         console.log('oldvlaue_'+oldvlaue);
+    })
+
+    /**
+        自定义监听器：watch 一般用于异步操作或花销比较大时
+        用于异步的监听器
+    */
+    var watchApp = new Vue({
+        el:'#watchApp',
+        data:{
+            question:'',
+            answer:'等着给你找答案去'
+        },
+        watch:{
+            question:function(newValue, oldvlaue){
+                if(newValue.indexOf('?') === -1){
+                    this.answer = '请以问号结尾，帮你查找问题'
+                    return false;
+                }
+                // 发送请求
+                this.getAnswer();
+            }
+        },
+        methods:{
+            getAnswer:function(){
+                this.answer = '正在为您搜索。。。。'
+                var That = this;
+                axios.get('https://yesno.wtf/api')
+                .then(function(response){
+                    That.answer = _.capitalize(response.data.answer);
+                })
+            }
+        }
     })
 </script>
 
