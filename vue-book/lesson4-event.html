@@ -11,24 +11,51 @@
 <body>
     <div id="app">
         <button v-on:click="warn('Form cannot be submitted yet.',$event)">点我触发</button>
+        <!-- 绑定键盘输入事件 -->
+        <div>
+            <input type="text" @keyup.enter="submit" v-model="inputMessage">
+            <div>
+                {{show}}
+            </div>
+        </div>
+        <!-- click+ctrl键 -->
+        <div @click.ctrl="clean">
+            {{clear}}
+        </div>
+        
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
         /**
             1、需要访问原生的事件，可以通过传参（$event）的方式在函数中获得
             2、6中提供的事件修饰符，不要把 .passive 和 .prevent 一起使用，因为 .prevent 将会被忽略，同时浏览器可能会向你展示一个警告。请记住，.passive 会告诉浏览器你不想阻止事件的默认行为。
+            3、可直接通过事件修饰符绑定按键事件
+                可以通过全局 Vue.config.keyCodes 对象自定义按键修饰符别名：
+                // 可以使用 `v-on:keyup.f1
+                Vue.config.keyCodes.f1 = 112
+             
         */
         var app = new Vue({
             el: "#app",
             data: {
-
+                inputMessage:'',
+                show:'',
+                clear:'ctrl+c clear me!'
             },
             methods: {
                 warn: function (message, event) {
                     // 现在我们可以访问原生事件对象
                     if (event) event.preventDefault()
                     alert(message)
+                },
+                submit:function(){
+                    this.show = '你输入的是：' + this.inputMessage;
+                },
+                clean:function(){
+                    this.clear = '';
                 }
+
             }
         })
     </script>
