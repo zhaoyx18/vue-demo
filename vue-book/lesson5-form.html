@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="radio" v-model="gener" value="0"> male
+        <input type="radio" v-model="gener" value="1"> female
+        <p>{{gener}}</p>
+        <select v-model="book">
+            <option value="" disabled>请选择</option>
+            <option v-for="item in bookList" v-bind:value="item.value">{{item.name}}</option>
+        </select>
+        <p>你想看的书是：{{book}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        /**
+            1、使用select时，添加一个空选项value="" 加上disabled属性可以设置为默认
+            2、多选时，需要绑定到一个数组
+            3、修饰符：.lazy .number .trim
+        */
+        var app = new Vue({
+            el:"#app",
+            data:{
+                gener:1,
+                book:'',
+                bookList:[
+                    {value:1,name:'西游记'},
+                    {value:2,name:'红楼梦'},
+                    {value:3,name:'三国演义'}
+                ]
+            },
+            methods:{
+
+            }
+
+        })
+    </script>
+</body>
+</html>
