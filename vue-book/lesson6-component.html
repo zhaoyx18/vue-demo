@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="componentDemo">
+        <button-component></button-component>
+        <button-component></button-component>
+        <button-component></button-component>
+        <ul>
+            <list-component v-for="item in list" v-bind:key="item.id" v-bind:comlist="item"></list-component>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        /**
+            1、组件中的data，是一个function 将count return出来，这样因此每个实例可以维护一份被返回对象的独立的拷贝，
+            2、组件的复用是，是重新new了一个实例
+            3、通过prop进行数据传递时，属性名称必须全部小写
+        */
+        Vue.component('button-component', {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: `<button @click="count++">点我增加{{count}}</button>`
+        })
+        Vue.component('list-component', {
+            props:['comlist'],
+            template: `<li>{{comlist.message}}</li>`
+           
+        })
+
+        var vm = new Vue({
+            el: '#componentDemo',
+            data: {
+                list: [
+                    { id: '1', message: 'lv' },
+                    { id: '2', message: 'ysl' },
+                    { id: '3', message: 'yashi' }
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>
