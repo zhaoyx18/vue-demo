@@ -16,6 +16,10 @@
         <ul>
             <list-component v-for="item in list" v-bind:key="item.id" v-bind:comlist="item"></list-component>
         </ul>
+
+        <ul :style="{fontSize:postFont + 'px'}">
+            <list-component v-for="item in list" v-bind:key="item.id" v-bind:comlist="item" v-on:enlarge="enlarge"></list-component>
+        </ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
@@ -23,6 +27,16 @@
             1、组件中的data，是一个function 将count return出来，这样因此每个实例可以维护一份被返回对象的独立的拷贝，
             2、组件的复用是，是重新new了一个实例
             3、通过prop进行数据传递时，属性名称必须全部小写
+        */
+
+         /**
+            1、每个组件必须只有一个根元素
+            2、子——父通信，使用事件
+            子定义事件：$emit('事件名称',数据)
+            父触发事件v-on:事件名称
+            3、接受数据的方式
+               1）父组件监听时，直接抛出$event 获取：postFontSize += $event
+               2）改为函数处理
         */
         Vue.component('button-component', {
             data: function () {
@@ -34,7 +48,8 @@
         })
         Vue.component('list-component', {
             props:['comlist'],
-            template: `<li>{{comlist.message}}</li>`
+            template: `<li>{{comlist.message}} <button @click="$emit('enlarge',10)">放大</button></li>`,
+            
            
         })
 
@@ -45,7 +60,13 @@
                     { id: '1', message: 'lv' },
                     { id: '2', message: 'ysl' },
                     { id: '3', message: 'yashi' }
-                ]
+                ],
+                postFont:10
+            },
+            methods:{
+                enlarge:function (enlargeAmount){
+                    this.postFont  += enlargeAmount
+                }
             }
         })
     </script>
