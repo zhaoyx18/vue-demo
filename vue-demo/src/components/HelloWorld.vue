@@ -1,6 +1,7 @@
 <template>
-  <div class="hello">
+  <div class="hello" :class="$style.red">
     <h1>{{ msg }}</h1>
+    <BaseInput/>
   </div>
 </template>
 
@@ -17,7 +18,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style module>
 h1, h2 {
   font-weight: normal;
 }
@@ -31,5 +32,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.red {
+  color: red;
 }
 </style>
