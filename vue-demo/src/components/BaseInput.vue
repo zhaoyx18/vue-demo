@@ -4,7 +4,7 @@
 <script>
 export default {
   mouted () {
-    console.log('input')
+    console.log('test input')
   }
 }
 </script>
