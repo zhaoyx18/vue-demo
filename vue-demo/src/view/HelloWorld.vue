@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import './title'
+import '@/components/title'
 /* eslint-disable */ 
 export default {
   name: 'HelloWorld',
